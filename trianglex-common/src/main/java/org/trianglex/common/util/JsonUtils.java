@@ -1,4 +1,4 @@
-package cc.sportsdb.common.util;
+package org.trianglex.common.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public abstract class JsonUtil {
+public abstract class JsonUtils {
 
     public static final ObjectMapper OBJECT_MAPPER;
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
     static {
         OBJECT_MAPPER = new ObjectMapper();
@@ -25,7 +25,7 @@ public abstract class JsonUtil {
         OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
-    private JsonUtil() {
+    private JsonUtils() {
     }
 
     public static <T> T parse(String jsonStr, TypeReference<? extends T> typeReference) {

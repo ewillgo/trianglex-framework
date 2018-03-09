@@ -1,4 +1,4 @@
-package cc.sportsdb.common.spring;
+package org.trianglex.common.spring;
 
 import org.springframework.context.ApplicationContext;
 
