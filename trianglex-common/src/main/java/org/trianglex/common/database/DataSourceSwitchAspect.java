@@ -1,30 +1,32 @@
 package org.trianglex.common.database;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.core.Ordered;
+import org.aspectj.lang.annotation.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 @Aspect
-public class DataSourceSwitchAspect implements Ordered {
+@Order(-1)
+@Component
+public class DataSourceSwitchAspect {
 
-    @Pointcut("@annotation(cc.sportsdb.common.database.DataSource)")
-    public void pointcut() {
-    }
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceSwitchAspect.class);
 
-    @Around("@annotation(dataSource)")
-    public Object proceed(ProceedingJoinPoint joinPoint, DataSource dataSource) throws Throwable {
-        try {
-            DynamicDataSourceHolder.setCurrentDataSourceName(dataSource.value());
-            return joinPoint.proceed();
-        } finally {
-            DynamicDataSourceHolder.removeCurrentDataSourceName();
+    @Before("@annotation(dataSource)")
+    public void before(DataSource dataSource) {
+        if (DynamicDataSourceContextHolder.containsDataSourceName(dataSource.value())) {
+            DynamicDataSourceContextHolder.setCurrentDataSourceName(dataSource.value());
+        } else {
+            logger.error("Could not found data source name.");
         }
     }
 
-    @Override
-    public int getOrder() {
-        return 0;
+    @After("@annotation(dataSource)")
+    public void after(DataSource dataSource) {
+        DynamicDataSourceContextHolder.removeCurrentDataSourceName();
     }
+
 }
