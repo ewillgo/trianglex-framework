@@ -3,19 +3,27 @@ package org.trianglex.common.database;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.EmptyStackException;
-import java.util.Stack;
+import java.util.*;
 
-public abstract class DynamicDataSourceContextHolder {
+public abstract class DataSourceContextHolder {
 
-    private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceContextHolder.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceContextHolder.class);
     private static final ThreadLocal<Stack<String>> HOLDER = ThreadLocal.withInitial(Stack<String>::new);
+    private static final Set<String> DATA_SOURCE_NAMES = new HashSet<>();
 
-    private DynamicDataSourceContextHolder() {
+    private DataSourceContextHolder() {
+    }
+
+    static Set<String> getDataSourceNames() {
+        return Collections.unmodifiableSet(DATA_SOURCE_NAMES);
+    }
+
+    static void setDataSourceName(String dataSourceName) {
+        DATA_SOURCE_NAMES.add(dataSourceName);
     }
 
     public static boolean containsDataSourceName(String dataSourceName) {
-        return HOLDER.get().contains(dataSourceName);
+        return DATA_SOURCE_NAMES.contains(dataSourceName);
     }
 
     public static String peekCurrentDataSourceName() {

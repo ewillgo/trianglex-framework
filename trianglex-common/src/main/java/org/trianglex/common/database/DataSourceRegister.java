@@ -57,6 +57,7 @@ public class DataSourceRegister implements ImportBeanDefinitionRegistrar, Enviro
                 defaultDataSource = dataSource;
             }
 
+            DataSourceContextHolder.setDataSourceName(dataSourceName);
             targetDataSources.put(dataSourceName, dataSource);
         }
 
@@ -69,14 +70,14 @@ public class DataSourceRegister implements ImportBeanDefinitionRegistrar, Enviro
         mutablePropertyValues.addPropertyValue("targetDataSources", targetDataSources);
         registry.registerBeanDefinition("dataSource", genericBeanDefinition);
 
-        logger.info("DataSource registered.");
+        logger.info("DataSource registered. {}", DataSourceContextHolder.getDataSourceNames());
     }
 
     static class DynamicDataSource extends AbstractRoutingDataSource {
 
         @Override
         protected Object determineCurrentLookupKey() {
-            return DynamicDataSourceContextHolder.peekCurrentDataSourceName();
+            return DataSourceContextHolder.peekCurrentDataSourceName();
         }
 
     }

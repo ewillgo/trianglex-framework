@@ -17,8 +17,8 @@ public class DataSourceSwitchAspect {
 
     @Before("@annotation(dataSource)")
     public void before(DataSource dataSource) {
-        if (DynamicDataSourceContextHolder.containsDataSourceName(dataSource.value())) {
-            DynamicDataSourceContextHolder.setCurrentDataSourceName(dataSource.value());
+        if (DataSourceContextHolder.containsDataSourceName(dataSource.value())) {
+            DataSourceContextHolder.setCurrentDataSourceName(dataSource.value());
         } else {
             logger.error("Could not found data source name.");
         }
@@ -26,7 +26,7 @@ public class DataSourceSwitchAspect {
 
     @After("@annotation(dataSource)")
     public void after(DataSource dataSource) {
-        DynamicDataSourceContextHolder.removeCurrentDataSourceName();
+        DataSourceContextHolder.removeCurrentDataSourceName();
     }
 
 }
