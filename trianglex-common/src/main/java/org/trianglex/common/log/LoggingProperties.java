@@ -2,6 +2,7 @@ package org.trianglex.common.log;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,8 +12,8 @@ import java.util.Set;
 public class LoggingProperties implements InitializingBean {
 
     private LogLevel logLevel;
-    private String ignoreUrls;
-    private String ignoreSuffixs;
+    private String ignoreUrls = "";
+    private String ignoreSuffixs = "";
 
     private Set<String> ignoreUrlSet = new HashSet<>();
     private Set<String> ignoreSuffixSet = new HashSet<>();
@@ -59,7 +60,11 @@ public class LoggingProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        ignoreUrlSet.addAll(Arrays.asList(ignoreUrls.replaceAll("\\s+", "").split(",")));
-        ignoreSuffixSet.addAll(Arrays.asList(ignoreSuffixs.replaceAll("\\s+", "").split(",")));
+        if (!StringUtils.isEmpty(ignoreUrls)) {
+            ignoreUrlSet.addAll(Arrays.asList(ignoreUrls.replaceAll("\\s+", "").split(",")));
+        }
+        if (!StringUtils.isEmpty(ignoreSuffixs)) {
+            ignoreSuffixSet.addAll(Arrays.asList(ignoreSuffixs.replaceAll("\\s+", "").split(",")));
+        }
     }
 }

@@ -3,9 +3,7 @@ package org.trianglex.common.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +22,6 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 @Configuration
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @ImportAutoConfiguration({
         LogConfig.class
 })
