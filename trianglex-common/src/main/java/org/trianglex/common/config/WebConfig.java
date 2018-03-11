@@ -23,6 +23,7 @@ import java.util.Arrays;
 
 @Configuration
 @ImportAutoConfiguration({
+        WebMvcConfig.class,
         LogConfig.class
 })
 public class WebConfig implements ApplicationContextAware {
