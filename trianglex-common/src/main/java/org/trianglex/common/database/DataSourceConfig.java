@@ -9,11 +9,12 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.trianglex.common.database.mybatis.MyBatisConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@Import(DataSourceRegister.class)
+@Import({DataSourceRegister.class, MyBatisConfig.class})
 public class DataSourceConfig {
 
     @ConditionalOnMissingBean
