@@ -18,6 +18,7 @@ import org.trianglex.common.database.DataSourceConfig;
 import org.trianglex.common.log.LogConfig;
 import org.trianglex.common.spring.ApplicationContextHolder;
 import org.trianglex.common.util.JsonUtils;
+import org.trianglex.common.web.HttpConfig;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -26,7 +27,8 @@ import java.util.Arrays;
 @ImportAutoConfiguration({
         WebMvcConfig.class,
         LogConfig.class,
-        DataSourceConfig.class
+        DataSourceConfig.class,
+        HttpConfig.class
 })
 public class WebConfig implements ApplicationContextAware {
 

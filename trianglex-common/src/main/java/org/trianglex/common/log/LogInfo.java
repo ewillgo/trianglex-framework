@@ -1,5 +1,6 @@
 package org.trianglex.common.log;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.trianglex.common.util.JsonUtils;
 
 import java.util.LinkedHashMap;
@@ -9,6 +10,26 @@ public class LogInfo {
 
     protected String url;
     protected Map<String, String> headers;
+    @JsonIgnore
+    protected String requestName = "request";
+    @JsonIgnore
+    protected String responseName = "response";
+
+    public String getRequestName() {
+        return requestName;
+    }
+
+    public void setRequestName(String requestName) {
+        this.requestName = requestName;
+    }
+
+    public String getResponseName() {
+        return responseName;
+    }
+
+    public void setResponseName(String responseName) {
+        this.responseName = responseName;
+    }
 
     public String getUrl() {
         return url;
@@ -67,7 +88,7 @@ public class LogInfo {
         @Override
         public String toString() {
             Map<String, Object> map = new LinkedHashMap<>(1);
-            map.put("request", this);
+            map.put(requestName, this);
             return JsonUtils.toJsonString(map);
         }
     }
@@ -104,7 +125,7 @@ public class LogInfo {
         @Override
         public String toString() {
             Map<String, Object> map = new LinkedHashMap<>(1);
-            map.put("response", this);
+            map.put(responseName, this);
             return JsonUtils.toJsonString(map);
         }
     }

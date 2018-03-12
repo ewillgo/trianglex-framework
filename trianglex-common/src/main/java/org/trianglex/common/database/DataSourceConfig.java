@@ -23,4 +23,9 @@ public class DataSourceConfig {
         return new DataSourceTransactionManager(dataSource);
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public DataSourceSwitchAspect dataSourceSwitchAspect() {
+        return new DataSourceSwitchAspect();
+    }
 }

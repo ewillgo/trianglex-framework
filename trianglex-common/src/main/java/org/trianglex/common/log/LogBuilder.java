@@ -104,7 +104,7 @@ public class LogBuilder {
         } catch (Exception e) {
         }
 
-        return requestBody;
+        return (requestBody != null && requestBody.length() > 0) ? requestBody : null;
     }
 
     private Object getResponseData(String contentType) {
@@ -131,7 +131,7 @@ public class LogBuilder {
             }
         }
 
-        return responseData;
+        return (responseData != null && responseData.length() > 0) ? responseData : null;
     }
 
     private Map<String, String> getRequestHeaders() {
