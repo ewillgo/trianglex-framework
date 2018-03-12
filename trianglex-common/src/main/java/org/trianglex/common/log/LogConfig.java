@@ -18,13 +18,15 @@ public class LogConfig {
     @Value("${spring.profiles.active:}")
     private String bootProfile;
 
+    private static final String DEFAULT_PROFILE = "dev";
+
     @Autowired
     private LoggingProperties loggingProperties;
 
     @Bean
     @ConditionalOnMissingBean
     public SpringMvcLoggingFilter springMvcLoggingFilter() {
-        String profile = "DEV";
+        String profile = DEFAULT_PROFILE;
 
         if (!StringUtils.isEmpty(cloudProfile)) {
             profile = cloudProfile;
