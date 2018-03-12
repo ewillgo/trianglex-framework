@@ -6,13 +6,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.util.StringUtils;
 
 @Configuration
 @Import(LoggingProperties.class)
 public class LogConfig {
 
-    @Value("${spring.cloud.config.profile:dev}")
-    private String profile;
+    @Value("${spring.cloud.config.profile:}")
+    private String cloudProfile;
+
+    @Value("${spring.profiles.active:}")
+    private String bootProfile;
 
     @Autowired
     private LoggingProperties loggingProperties;
@@ -20,6 +24,14 @@ public class LogConfig {
     @Bean
     @ConditionalOnMissingBean
     public SpringMvcLoggingFilter springMvcLoggingFilter() {
+        String profile = "DEV";
+
+        if (!StringUtils.isEmpty(cloudProfile)) {
+            profile = cloudProfile;
+        } else if (!StringUtils.isEmpty(bootProfile)) {
+            profile = bootProfile;
+        }
+
         loggingProperties.setLogLevel(LogLevel.valueOf(profile.toUpperCase()));
         return new SpringMvcLoggingFilter(loggingProperties);
     }
