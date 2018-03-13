@@ -32,7 +32,7 @@ public abstract class FrameworkUtils {
                                                AbstractHttpProperties httpProperties) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(messageConverters);
-        OkHttpClient.Builder okHttpClientBuilder = FrameworkUtils.okHttpClientBuilder(httpProperties);
+        OkHttpClient.Builder okHttpClientBuilder = okHttpClientBuilder(httpProperties);
         okHttpClientBuilder.addInterceptor(new HttpClientInterceptor(loggingProperties));
         restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClientBuilder.build()));
         return enhanceRestTemplate(name, restTemplate);

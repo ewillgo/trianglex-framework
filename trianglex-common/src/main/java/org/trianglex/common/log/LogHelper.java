@@ -26,7 +26,7 @@ public final class LogHelper {
 
     static boolean logIfNecessary(String url, LoggingProperties loggingProperties, Logger logger) {
         return loggingProperties.getLogLevel() != LogLevel.NONE && logger.isInfoEnabled()
-                && !matchSuffix(url, loggingProperties.getIgnoreSuffixSet()) && !matchUrl(url, loggingProperties.getIgnoreUrlSet());
+                && !matchSuffix(url, loggingProperties.getIgnoreSuffixs()) && !matchUrl(url, loggingProperties.getIgnoreUrls());
     }
 
     static boolean isLogResponseBody(String contentType) {

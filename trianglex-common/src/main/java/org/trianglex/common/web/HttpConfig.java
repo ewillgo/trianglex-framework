@@ -1,6 +1,7 @@
 package org.trianglex.common.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -44,6 +45,7 @@ public class HttpConfig {
 
     @Bean
     @Primary
+    @LoadBalanced
     public RestTemplate restTemplate() {
         return FrameworkUtils.getRestTemplate(NAME,
                 Arrays.asList(mappingJackson2HttpMessageConverter, stringHttpMessageConverter),
