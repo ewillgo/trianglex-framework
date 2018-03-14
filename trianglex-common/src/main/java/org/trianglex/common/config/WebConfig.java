@@ -14,6 +14,7 @@ import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
+import org.trianglex.common.data.redis.RedisConfig;
 import org.trianglex.common.database.DataSourceConfig;
 import org.trianglex.common.log.LogConfig;
 import org.trianglex.common.spring.ApplicationContextHolder;
@@ -28,7 +29,8 @@ import java.util.Arrays;
         WebMvcConfig.class,
         LogConfig.class,
         DataSourceConfig.class,
-        HttpConfig.class
+        HttpConfig.class,
+        RedisConfig.class
 })
 public class WebConfig implements ApplicationContextAware {
 

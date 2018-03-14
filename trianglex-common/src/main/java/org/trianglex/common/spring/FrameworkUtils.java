@@ -50,7 +50,7 @@ public abstract class FrameworkUtils {
                         !(converter instanceof MappingJackson2XmlHttpMessageConverter) &&
                         !(converter instanceof StringHttpMessageConverter));
 
-        logger.info("[{}] Message converters: {}", name, restTemplate.getMessageConverters().stream().map(c -> c.getClass().getSimpleName()).collect(Collectors.joining(",")));
+        logger.info("[{}] Message converters: {}", name, restTemplate.getMessageConverters().stream().map(c -> c.getClass().getSimpleName()).collect(Collectors.joining(", ")));
         return restTemplate;
     }
 
