@@ -19,7 +19,7 @@
     </parent>
 
     <modules>
-        <module>trianglex-common</module>
+        <module>common</module>
     </modules>
 
     <properties>
