@@ -7,7 +7,7 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>common</name>
+	<name>trianglex-common</name>
 
 	<parent>
 		<groupId>org.trianglex</groupId>
