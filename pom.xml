@@ -38,6 +38,7 @@
         <bouncycastle.version>1.59</bouncycastle.version>
         <jsoup.version>1.11.2</jsoup.version>
         <commons.pool2.version>2.5.0</commons.pool2.version>
+        <commons.codec.version>1.11</commons.codec.version>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +94,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons.pool2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

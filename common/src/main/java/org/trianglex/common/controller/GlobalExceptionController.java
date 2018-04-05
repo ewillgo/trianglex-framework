@@ -2,6 +2,7 @@ package org.trianglex.common.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -19,12 +20,18 @@ public class GlobalExceptionController {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionController.class);
 
     @ResponseBody
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(value = {Exception.class})
     public Result<String> exceptionHandler(Exception e) {
         logger.error(e.getMessage(), e);
         Result<String> result = new Result<>();
+
+        if (e instanceof DataAccessException) {
+            result.setMessage("Database occur error.");
+        } else {
+            result.setMessage(e.getMessage());
+        }
+
         result.setStatus(Result.FAIL);
-        result.setMessage(e.getMessage());
         return result;
     }
 
