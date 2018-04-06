@@ -12,7 +12,7 @@ import org.trianglex.common.database.mybatis.MyBatisConfig;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @Import({DataSourceRegister.class, MyBatisConfig.class})
-@ComponentScan(basePackages = "**.service.**")
+@ComponentScan(basePackages = {"**.service.**", "**.business.**"})
 public class DataSourceConfig {
 
     @ConditionalOnMissingBean
