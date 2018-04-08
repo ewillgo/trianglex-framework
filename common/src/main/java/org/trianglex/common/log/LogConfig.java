@@ -37,4 +37,9 @@ public class LogConfig {
         loggingProperties.setLogLevel(LogLevel.valueOf(profile.toUpperCase()));
         return new SpringMvcLoggingFilter(loggingProperties);
     }
+
+    @Bean
+    public LogExecuteTimeAspect logExecuteTimeAspect() {
+        return new LogExecuteTimeAspect();
+    }
 }
