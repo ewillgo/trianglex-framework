@@ -63,7 +63,7 @@ public final class LogHelper {
             MediaType mediaType = MediaType.parseMediaType(request.getContentType());
             return LOG_REQUEST_BODY_MEDIA_TYPE.stream().noneMatch(mediaType::includes)
                     ? request
-                    : new ContentCachingRequestWrapper(request);
+                    : new HttpServletContentCachingRequestWrapper(request);
         } catch (Exception e) {
             return request;
         }
