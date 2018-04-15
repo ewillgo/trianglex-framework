@@ -18,7 +18,7 @@ import static org.trianglex.common.web.FrameworkHttpProperties.NAME;
 import static org.trianglex.common.web.HttpProperties.RAW_NAME;
 
 @Configuration
-@Import({HttpProperties.class, FrameworkHttpProperties.class})
+@Import({HttpProperties.class, FrameworkHttpProperties.class, FeignConfg.class})
 public class HttpConfig {
 
     @Autowired
