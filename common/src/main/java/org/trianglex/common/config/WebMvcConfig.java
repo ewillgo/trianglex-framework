@@ -40,7 +40,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.clear();
         converters.add(mappingJackson2HttpMessageConverter);
         converters.add(stringHttpMessageConverter);
         converters.add(byteArrayHttpMessageConverter);
