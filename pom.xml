@@ -52,6 +52,8 @@
         <jsoup.version>1.11.2</jsoup.version>
         <commons.pool2.version>2.5.0</commons.pool2.version>
         <commons.codec.version>1.11</commons.codec.version>
+        <feign-form.version>2.0.2</feign-form.version>
+        <feign-form-spring.version>2.0.5</feign-form-spring.version>
     </properties>
 
     <dependencyManagement>
@@ -117,6 +119,16 @@
                 <groupId>org.trianglex</groupId>
                 <artifactId>trianglex-common</artifactId>
                 <version>${trianglex-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.openfeign.form</groupId>
+                <artifactId>feign-form</artifactId>
+                <version>${feign-form.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.openfeign.form</groupId>
+                <artifactId>feign-form-spring</artifactId>
+                <version>${feign-form-spring.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

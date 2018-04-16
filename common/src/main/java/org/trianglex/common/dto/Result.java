@@ -1,49 +1,38 @@
 package org.trianglex.common.dto;
 
-import org.springframework.data.annotation.Transient;
 
-import java.util.LinkedHashMap;
+public class Result<T> {
 
-public class Result<T> extends LinkedHashMap<String, Object> {
+    public transient static final Integer SUCCESS = 0;
+    public transient static final Integer FAIL = -1;
+    public transient static final String SUCCESS_MESSAGE = "Operation success.";
+    public transient static final String FAIL_MESSAGE = "Operation fail.";
 
-    @Transient
-    private static final String STATUS = "status";
-    @Transient
-    private static final String MESSAGE = "message";
-    @Transient
-    private static final String DATA = "data";
+    private Integer status;
+    private String message;
+    private T data;
 
     public Integer getStatus() {
-        return (Integer) get(STATUS);
+        return status;
     }
 
     public void setStatus(Integer status) {
-        put(STATUS, status);
+        this.status = status;
     }
 
     public String getMessage() {
-        return (String) get(MESSAGE);
+        return message;
     }
 
     public void setMessage(String message) {
-        put(MESSAGE, message);
+        this.message = message;
     }
 
-    @SuppressWarnings("unchecked")
     public T getData() {
-        return (T) get(DATA);
+        return data;
     }
 
     public void setData(T data) {
-        put(DATA, data);
+        this.data = data;
     }
-
-    @Transient
-    public static final Integer SUCCESS = 0;
-    @Transient
-    public static final Integer FAIL = -1;
-    @Transient
-    public static final String SUCCESS_MESSAGE = "Operation success.";
-    @Transient
-    public static final String FAIL_MESSAGE = "Operation fail.";
 }

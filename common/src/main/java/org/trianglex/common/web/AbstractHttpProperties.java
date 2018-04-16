@@ -9,7 +9,7 @@ public abstract class AbstractHttpProperties {
     protected long readTimeout = TimeUnit.SECONDS.toMillis(1);
     protected long connectTimeout = TimeUnit.SECONDS.toMillis(1);
     protected long writeTimeout = TimeUnit.SECONDS.toMillis(1);
-    protected long keepAliveDuration = TimeUnit.SECONDS.toSeconds(61);
+    protected long keepAliveDuration = TimeUnit.SECONDS.toSeconds(60);
 
     protected boolean followRedirects = true;
     protected boolean followSslRedirects = true;

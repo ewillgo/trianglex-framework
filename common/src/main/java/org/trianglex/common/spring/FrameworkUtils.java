@@ -38,6 +38,15 @@ public abstract class FrameworkUtils {
         return enhanceRestTemplate(name, restTemplate);
     }
 
+    public static RestTemplate getRestTemplate(String name,
+                                               List<HttpMessageConverter<?>> messageConverters,
+                                               OkHttpClient okHttpClient) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setMessageConverters(messageConverters);
+        restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
+        return enhanceRestTemplate(name, restTemplate);
+    }
+
     public static RestTemplate enhanceRestTemplate(String name, RestTemplate restTemplate) {
 
         if (restTemplate == null) {

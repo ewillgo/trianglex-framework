@@ -20,6 +20,7 @@ import org.trianglex.common.log.LogConfig;
 import org.trianglex.common.spring.ApplicationContextHolder;
 import org.trianglex.common.util.JsonUtils;
 import org.trianglex.common.web.HttpConfig;
+import org.trianglex.common.webservice.FeignConfg;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import java.util.Arrays;
         LogConfig.class,
         DataSourceConfig.class,
         HttpConfig.class,
+        FeignConfg.class,
         RedisConfig.class
 })
 public class WebConfig implements ApplicationContextAware {
