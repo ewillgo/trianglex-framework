@@ -38,7 +38,6 @@ public class GlobalExceptionController {
     @ResponseBody
     @ExceptionHandler(value = BindException.class)
     public Result<Map<String, String>> validationException(BindException e, BindingResult bindingResult) {
-        logger.error(e.getMessage(), e);
         Result<Map<String, String>> result = new Result<>();
 
         List<ObjectError> errorList = bindingResult.getAllErrors();
