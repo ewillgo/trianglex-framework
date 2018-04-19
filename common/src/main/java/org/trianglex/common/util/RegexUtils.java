@@ -8,6 +8,7 @@ public abstract class RegexUtils {
     public static final Pattern ID_CARD_18 = Pattern.compile("^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
     public static final Pattern URL = Pattern.compile("[a-zA-z]+://[^\\s]*");
     public static final Pattern PHONE = Pattern.compile("^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[3,7,8])|(18[0,5-9]))\\d{8}$");
+    public static final Pattern EMAIL = Pattern.compile("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?");
 
     private RegexUtils() {
     }

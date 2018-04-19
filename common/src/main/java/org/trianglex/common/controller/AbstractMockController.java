@@ -41,7 +41,7 @@ public abstract class AbstractMockController<T> {
         return mockPost(uri, null);
     }
 
-    public final MvcResult mockPost(String uri, Map<String, String> params) throws Exception {
+    public final MvcResult mockPost(String uri, Map<String, Object> params) throws Exception {
         return mock(uri, HttpMethod.POST, params);
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractMockController<T> {
         return mockGet(uri, null);
     }
 
-    public final MvcResult mockGet(String uri, Map<String, String> params) throws Exception {
+    public final MvcResult mockGet(String uri, Map<String, Object> params) throws Exception {
         return mock(uri, HttpMethod.GET, params);
     }
 
@@ -72,12 +72,12 @@ public abstract class AbstractMockController<T> {
         return mvc.perform(builder).andReturn();
     }
 
-    public final MvcResult mock(String uri, HttpMethod method, Map<String, String> params) throws Exception {
+    public final MvcResult mock(String uri, HttpMethod method, Map<String, Object> params) throws Exception {
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.request(method, getHost() + uri);
 
         if (params != null && params.size() > 0) {
             params.forEach((k, v) -> {
-                builder.param(k, v);
+                builder.param(k, String.valueOf(v));
             });
         }
 
