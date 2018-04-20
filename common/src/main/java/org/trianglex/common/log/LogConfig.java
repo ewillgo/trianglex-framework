@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
 @Configuration
-@Import(LoggingProperties.class)
+@Import({LoggingProperties.class, LogExecuteTimeAspect.class})
 public class LogConfig {
 
     @Value("${spring.cloud.config.profile:}")

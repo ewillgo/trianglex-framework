@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.trianglex.common.constant.PropertiesConstant.SPRING_MVC_LOGGING_FILTER_ORDERED;
+
 public class SpringMvcLoggingFilter extends OncePerRequestFilter implements Ordered {
 
     private final LoggingProperties loggingProperties;
@@ -46,6 +48,6 @@ public class SpringMvcLoggingFilter extends OncePerRequestFilter implements Orde
 
     @Override
     public int getOrder() {
-        return -10;
+        return SPRING_MVC_LOGGING_FILTER_ORDERED;
     }
 }
