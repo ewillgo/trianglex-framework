@@ -11,7 +11,7 @@ import java.util.Map;
 
 class XssHttpServletRequest extends HttpServletRequestWrapper {
 
-    private static final Whitelist whitelist = Whitelist.basicWithImages();
+    private static final Whitelist whitelist = Whitelist.relaxed();
 
     XssHttpServletRequest(HttpServletRequest request) {
         super(request);
