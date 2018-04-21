@@ -5,15 +5,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import static org.trianglex.common.constant.PropertiesConstant.SPRING_MVC_DATASOURCE_ASPECT_ORDERED;
 
 @Aspect
-@Order(SPRING_MVC_DATASOURCE_ASPECT_ORDERED)
 @Component
-public class DataSourceSwitchAspect {
+public class DataSourceSwitchAspect implements Ordered {
 
     private static final Logger logger = LoggerFactory.getLogger(DataSourceSwitchAspect.class);
 
@@ -31,4 +30,8 @@ public class DataSourceSwitchAspect {
         DataSourceContextHolder.removeCurrentDataSourceName();
     }
 
+    @Override
+    public int getOrder() {
+        return SPRING_MVC_DATASOURCE_ASPECT_ORDERED;
+    }
 }
