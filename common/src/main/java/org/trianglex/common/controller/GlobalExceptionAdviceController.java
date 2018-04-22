@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionController {
+public class GlobalExceptionAdviceController {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionController.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionAdviceController.class);
 
     @ResponseBody
     @ExceptionHandler(value = {Exception.class})

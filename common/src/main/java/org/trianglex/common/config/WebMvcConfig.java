@@ -13,13 +13,13 @@ import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConve
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.trianglex.common.controller.GlobalExceptionController;
+import org.trianglex.common.controller.GlobalExceptionAdviceController;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-@Import(GlobalExceptionController.class)
+@Import(GlobalExceptionAdviceController.class)
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(WebMvcConfig.class);
