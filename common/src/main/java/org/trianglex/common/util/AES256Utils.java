@@ -30,22 +30,22 @@ public abstract class AES256Utils {
 
     }
 
-    public static String encodeToUrlSafeString(byte[] bytes) {
-        return Base64Utils.encodeToUrlSafeString(bytes);
+    public static String encodeToUrlSafeString(byte[] data) {
+        return Base64Utils.encodeToUrlSafeString(data);
     }
 
     public static byte[] decodeFromUrlSafeString(String content) {
         return Base64Utils.decodeFromUrlSafeString(content);
     }
 
-    public static byte[] encrypt(byte[] bytes, String salt) {
+    public static byte[] encrypt(byte[] data, String salt) {
 
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
             keyGenerator.init(KEY_GENERATOR_BIT, new SecureRandom(DigestUtils.sha256(salt.getBytes())));
             Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, "BC");
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), ALGORITHM_NAME));
-            return cipher.doFinal(bytes);
+            return cipher.doFinal(data);
         } catch (Exception e) {
             logger.error("AES encrypt error.", e);
         }
@@ -53,14 +53,14 @@ public abstract class AES256Utils {
         return null;
     }
 
-    public static byte[] decrypt(byte[] bytes, String salt) {
+    public static byte[] decrypt(byte[] data, String salt) {
 
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
             keyGenerator.init(KEY_GENERATOR_BIT, new SecureRandom(DigestUtils.sha256(salt.getBytes())));
             Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, "BC");
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), ALGORITHM_NAME));
-            return cipher.doFinal(bytes);
+            return cipher.doFinal(data);
         } catch (Exception e) {
             logger.error("AES decrypt error.", e);
         }
