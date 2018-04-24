@@ -61,4 +61,22 @@ public abstract class ToolUtils {
 
         return idCard.length() == 18 ? (genderCode % 2 == 0 ? 2 : 1) : 0;
     }
+
+    public static String extractBirth(String idCard) {
+
+        if (StringUtils.isEmpty(idCard)) {
+            return null;
+        }
+
+        String birthday = null;
+        idCard = idCard.replaceAll("\\s+", "");
+        int idCardLength = idCard.length();
+
+        if (idCardLength == 18) {
+            birthday = idCard.substring(6, 10) + "-" + idCard.substring(10, 12) + "-" + idCard.substring(12, 14);
+        }
+
+        return birthday;
+    }
+
 }
