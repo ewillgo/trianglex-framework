@@ -1,5 +1,7 @@
 package org.trianglex.common.util;
 
+import org.springframework.util.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -47,5 +49,16 @@ public abstract class ToolUtils {
 
     public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    public static int extractGender(String idCard) {
+
+        if (StringUtils.isEmpty(idCard)) {
+            return 0;
+        }
+
+        int genderCode = Integer.parseInt(idCard.substring(idCard.length() - 2, idCard.length() - 1));
+
+        return idCard.length() == 18 ? (genderCode % 2 == 0 ? 2 : 1) : 0;
     }
 }
