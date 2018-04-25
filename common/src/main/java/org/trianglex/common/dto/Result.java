@@ -12,6 +12,15 @@ public class Result<T> {
     private String message;
     private T data;
 
+    public Result() {
+
+    }
+
+    public Result(Integer status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
     public Integer getStatus() {
         return status;
     }
