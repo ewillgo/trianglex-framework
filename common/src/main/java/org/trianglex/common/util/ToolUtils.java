@@ -57,6 +57,7 @@ public abstract class ToolUtils {
             return 0;
         }
 
+        idCard = idCard.replaceAll("\\s+", "");
         int genderCode = Integer.parseInt(idCard.substring(idCard.length() - 2, idCard.length() - 1));
 
         return idCard.length() == 18 ? (genderCode % 2 == 0 ? 2 : 1) : 0;
