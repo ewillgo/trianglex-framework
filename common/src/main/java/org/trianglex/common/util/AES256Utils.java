@@ -13,6 +13,7 @@ import java.security.Security;
 
 public abstract class AES256Utils {
 
+    private static final String CHARSET = "UTF-8";
     private static final int KEY_GENERATOR_BIT = 256;
     private static final String ALGORITHM_NAME = "AES";
     private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
@@ -43,11 +44,11 @@ public abstract class AES256Utils {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
 
-            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
-            secureRandom.setSeed(salt.getBytes());
+            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM, "SUN");
+            secureRandom.setSeed(salt.getBytes(CHARSET));
 
             keyGenerator.init(KEY_GENERATOR_BIT, secureRandom);
-            Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, "BC");
+            Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, BouncyCastleProvider.PROVIDER_NAME);
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), ALGORITHM_NAME));
             return cipher.doFinal(data);
         } catch (Exception e) {
@@ -62,11 +63,11 @@ public abstract class AES256Utils {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
 
-            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
-            secureRandom.setSeed(salt.getBytes());
+            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM, "SUN");
+            secureRandom.setSeed(salt.getBytes(CHARSET));
 
             keyGenerator.init(KEY_GENERATOR_BIT, secureRandom);
-            Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, "BC");
+            Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, BouncyCastleProvider.PROVIDER_NAME);
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), ALGORITHM_NAME));
             return cipher.doFinal(data);
         } catch (Exception e) {
