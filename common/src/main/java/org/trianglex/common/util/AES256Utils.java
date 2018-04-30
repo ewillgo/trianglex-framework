@@ -44,7 +44,7 @@ public abstract class AES256Utils {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
 
-            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM, "SUN");
+            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
             secureRandom.setSeed(salt.getBytes(CHARSET));
 
             keyGenerator.init(KEY_GENERATOR_BIT, secureRandom);
@@ -63,7 +63,7 @@ public abstract class AES256Utils {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
 
-            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM, "SUN");
+            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
             secureRandom.setSeed(salt.getBytes(CHARSET));
 
             keyGenerator.init(KEY_GENERATOR_BIT, secureRandom);
