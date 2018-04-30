@@ -9,6 +9,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.trianglex.common.dto.Result;
 
 import java.util.List;
@@ -22,13 +23,20 @@ public class GlobalExceptionAdviceController {
     @ResponseBody
     @ExceptionHandler(value = {Exception.class})
     public Result<String> exceptionHandler(Exception e) {
-        logger.error(e.getMessage(), e);
         Result<String> result = new Result<>();
 
+        boolean isLogException = true;
         if (e instanceof DataAccessException) {
             result.setMessage("Database occur error.");
+        } else if (e instanceof NoHandlerFoundException) {
+            result.setMessage("No handler found.");
+            isLogException = false;
         } else {
             result.setMessage(e.getMessage());
+        }
+
+        if (isLogException) {
+            logger.error(e.getMessage(), e);
         }
 
         result.setStatus(Result.FAIL);
