@@ -1,6 +1,5 @@
 package org.trianglex.common.util;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ public abstract class AES256Utils {
 
     private static final int KEY_GENERATOR_BIT = 256;
     private static final String ALGORITHM_NAME = "AES";
+    private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String CIPHER_INSTANCE_NAME = "AES/ECB/PKCS7Padding";
 
     private static Logger logger = LoggerFactory.getLogger(AES256Utils.class);
@@ -42,7 +42,11 @@ public abstract class AES256Utils {
 
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
-            keyGenerator.init(KEY_GENERATOR_BIT, new SecureRandom(DigestUtils.sha256(salt.getBytes())));
+
+            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
+            secureRandom.setSeed(salt.getBytes());
+
+            keyGenerator.init(KEY_GENERATOR_BIT, secureRandom);
             Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, "BC");
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), ALGORITHM_NAME));
             return cipher.doFinal(data);
@@ -57,7 +61,11 @@ public abstract class AES256Utils {
 
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM_NAME);
-            keyGenerator.init(KEY_GENERATOR_BIT, new SecureRandom(DigestUtils.sha256(salt.getBytes())));
+
+            SecureRandom secureRandom = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
+            secureRandom.setSeed(salt.getBytes());
+
+            keyGenerator.init(KEY_GENERATOR_BIT, secureRandom);
             Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE_NAME, "BC");
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), ALGORITHM_NAME));
             return cipher.doFinal(data);
