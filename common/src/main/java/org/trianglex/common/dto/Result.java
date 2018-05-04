@@ -44,4 +44,8 @@ public class Result<T> {
     public void setData(T data) {
         this.data = data;
     }
+
+    public static <T> Result<T> of(Integer status, String message) {
+        return new Result<>(status, message);
+    }
 }

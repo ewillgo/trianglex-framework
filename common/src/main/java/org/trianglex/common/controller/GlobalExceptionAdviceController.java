@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.trianglex.common.dto.Result;
+import org.trianglex.common.exception.BusinessException;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,15 @@ public class GlobalExceptionAdviceController {
 
         result.setStatus(Result.FAIL);
         return result;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = BusinessException.class)
+    public Result<Object> businessException(BusinessException e) {
+        if (e.getOriginal() != null) {
+            logger.error(e.getOriginal().getMessage(), e.getOriginal());
+        }
+        return Result.of(e.getStatus(), e.getMessage());
     }
 
     @ResponseBody
