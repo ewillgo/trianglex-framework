@@ -80,4 +80,11 @@ public abstract class ToolUtils {
         return birthday;
     }
 
+    private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
+    private static final String X_REQUESTED_WITH = "x-requested-with";
+
+    public static boolean isAjax(HttpServletRequest request) {
+        return request.getHeader(X_REQUESTED_WITH) != null
+                && XML_HTTP_REQUEST.equalsIgnoreCase(request.getHeader(X_REQUESTED_WITH));
+    }
 }

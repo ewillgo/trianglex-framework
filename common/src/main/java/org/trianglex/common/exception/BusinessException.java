@@ -6,6 +6,15 @@ public class BusinessException extends RuntimeException {
     private Integer status;
     private Object data;
 
+    public BusinessException(String message) {
+        super(message);
+    }
+
+    public BusinessException(String message, Throwable cause) {
+        super(message);
+        this.original = cause;
+    }
+
     public BusinessException(Integer status, String message) {
         super(message);
         this.status = status;
