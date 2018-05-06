@@ -33,8 +33,4 @@ public class ApiAttributes implements ApiRequest {
         this.originalString = originalString;
     }
 
-    @Override
-    public String toString() {
-        return String.format("sign=%s&originalString=%s&appKey=%s", sign, originalString, appKey);
-    }
 }
