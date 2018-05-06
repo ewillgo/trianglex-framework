@@ -2,7 +2,9 @@ package org.trianglex.common.constant;
 
 public interface PropertiesConstant {
     String FRAMEWORK_HTTP_CONFIG_PREFIX = "framework.http";
+    String FRAMEWORK_CORS_CONFIG_PREFIX = "framework.cors";
     String HTTP_CONFIG_PREFIX = "http.config";
+    String SECURITY_PATH_PATTERN = "/actuator/**";
 
     int SPRING_MVC_LOGGING_FILTER_ORDERED = -10;
     int SPRING_MVC_XSS_FILTER_ORDERED = SPRING_MVC_LOGGING_FILTER_ORDERED + 1;
