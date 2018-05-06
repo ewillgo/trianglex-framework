@@ -1,16 +1,17 @@
 package org.trianglex.common.security.auth;
 
+import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.trianglex.common.exception.BusinessException;
+import org.trianglex.common.spring.ApplicationContextHolder;
 
 import java.time.Duration;
 
@@ -20,8 +21,15 @@ import static org.trianglex.common.constant.PropertiesConstant.SPRING_MVC_AUTH_A
 @Component
 public class AuthorizationAspect implements Ordered {
 
-    @Autowired
-    private AppCacheLoader appCacheLoader;
+    @SuppressWarnings("unchecked")
+    private static final CacheLoader<String, String> CACHE_LOADER =
+            ApplicationContextHolder.getApplicationContext().getBean("appCacheLoader", CacheLoader.class);
+
+    private static final LoadingCache<String, String> LOADING_CACHE = Caffeine.newBuilder()
+            .maximumSize(100)
+            .expireAfterWrite(Duration.ofDays(1))
+            .refreshAfterWrite(Duration.ofHours(12))
+            .build(CACHE_LOADER);
 
     private static final String CHARSET = "UTF-8";
 
@@ -55,14 +63,7 @@ public class AuthorizationAspect implements Ordered {
                 throw new BusinessException(apiAuthorization.message(), e);
             }
 
-            LoadingCache<String, String> loadingCache = Caffeine.newBuilder()
-                    .maximumSize(100)
-                    .expireAfterWrite(Duration.ofDays(1))
-                    .refreshAfterWrite(Duration.ofHours(12))
-                    .build(appCacheLoader);
-
-            String appSecret = loadingCache.getIfPresent(apiRequest.getAppKey());
-
+            String appSecret = LOADING_CACHE.get(apiRequest.getAppKey());
             String clientSign = apiRequest.getSign();
             String serverSign = SignUtils.sign(originalString, appSecret);
 
