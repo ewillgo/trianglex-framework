@@ -3,6 +3,8 @@ package org.trianglex.common.security;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import static org.trianglex.common.constant.PropertiesConstant.SECURITY_PATH_PATTERN;
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -10,7 +12,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/actuator/**")
+                .antMatchers(SECURITY_PATH_PATTERN)
                 .authenticated()
                 .and()
                 .httpBasic();
