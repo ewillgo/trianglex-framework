@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 public abstract class ToolUtils {
 
@@ -86,5 +87,17 @@ public abstract class ToolUtils {
     public static boolean isAjax(HttpServletRequest request) {
         return request.getHeader(X_REQUESTED_WITH) != null
                 && XML_HTTP_REQUEST.equalsIgnoreCase(request.getHeader(X_REQUESTED_WITH));
+    }
+
+    public static String cleanEmoji(String str) {
+        StringBuffer sb = new StringBuffer();
+        Matcher emojiMatcher = RegexUtils.EMOJI.matcher(str);
+
+        while (emojiMatcher.find()) {
+            emojiMatcher.appendReplacement(sb, "");
+        }
+
+        emojiMatcher.appendTail(sb);
+        return sb.toString();
     }
 }
