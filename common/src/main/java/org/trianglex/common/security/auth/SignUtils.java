@@ -24,8 +24,8 @@ public abstract class SignUtils {
         }
     }
 
-    public static String sign(String originalString, String appSecret) {
-        return DigestUtils.sha256Hex(
-                String.format("%s::%s", appSecret, DigestUtils.md5Hex(originalString)));
+    public static <T> String sign(T original, String appSecret) {
+        return DigestUtils.sha512Hex(
+                String.format("%s::%s", appSecret, DigestUtils.md5Hex(JsonUtils.toJsonString(original))));
     }
 }
