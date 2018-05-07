@@ -24,7 +24,7 @@ public class WebSecurityCorsConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors()
                 .and()
-                .headers().frameOptions().sameOrigin()
+                .headers().frameOptions().deny()
                 .and()
                 .csrf().disable().authorizeRequests().antMatchers(SECURITY_PATH_PATTERN).authenticated()
                 .and()
