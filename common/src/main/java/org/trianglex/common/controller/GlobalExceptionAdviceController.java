@@ -19,6 +19,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionAdviceController {
 
+    private static final int FAIL = -1;
+    private static final String FAIL_MESSAGE = "Operation fail.";
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionAdviceController.class);
 
     @ResponseBody
@@ -40,17 +42,21 @@ public class GlobalExceptionAdviceController {
             logger.error(e.getMessage(), e);
         }
 
-        result.setStatus(Result.FAIL);
+        result.setStatus(FAIL);
         return result;
     }
 
     @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public Result<Object> businessException(BusinessException e) {
+
         if (e.getOriginal() != null) {
             logger.error(e.getOriginal().getMessage(), e.getOriginal());
         }
-        return Result.of(e.getStatus(), e.getMessage());
+
+        return e.getBusinessCode() == null
+                ? Result.of(FAIL, e.getMessage())
+                : Result.of(e.getBusinessCode(), e.getData());
     }
 
     @ResponseBody
@@ -71,8 +77,8 @@ public class GlobalExceptionAdviceController {
             return result;
         }
 
-        result.setStatus(Result.FAIL);
-        result.setMessage(Result.FAIL_MESSAGE);
+        result.setStatus(FAIL);
+        result.setMessage(FAIL_MESSAGE);
         return result;
     }
 

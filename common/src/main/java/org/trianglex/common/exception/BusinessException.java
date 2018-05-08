@@ -3,7 +3,7 @@ package org.trianglex.common.exception;
 public class BusinessException extends RuntimeException {
 
     private Throwable original;
-    private Integer status;
+    private BusinessCode businessCode;
     private Object data;
 
     public BusinessException(String message) {
@@ -11,36 +11,31 @@ public class BusinessException extends RuntimeException {
     }
 
     public BusinessException(String message, Throwable cause) {
-        super(message);
+        super(message, cause);
         this.original = cause;
     }
 
-    public BusinessException(Integer status, String message) {
-        super(message);
-        this.status = status;
+    public BusinessException(BusinessCode businessCode) {
+        super(businessCode.getMessage());
+        this.businessCode = businessCode;
     }
 
-    public BusinessException(Integer status, String message, Object data) {
-        super(message);
-        this.status = status;
+    public BusinessException(BusinessCode businessCode, Throwable cause) {
+        super(businessCode.getMessage(), cause);
+        this.businessCode = businessCode;
+        this.original = cause;
+    }
+
+    public BusinessException(BusinessCode businessCode, Object data) {
+        super(businessCode.getMessage());
+        this.businessCode = businessCode;
         this.data = data;
     }
 
-    public BusinessException(Integer status, String message, Throwable cause) {
-        super(message, cause);
-        this.status = status;
-        this.original = cause;
-    }
-
-    public BusinessException(Integer status, String message, Object data, Throwable cause) {
-        super(message, cause);
-        this.status = status;
+    public BusinessException(BusinessCode businessCode, Object data, Throwable cause) {
+        super(businessCode.getMessage(), cause);
+        this.businessCode = businessCode;
         this.data = data;
-        this.original = cause;
-    }
-
-    public BusinessException(Throwable cause) {
-        super(cause);
         this.original = cause;
     }
 
@@ -48,8 +43,8 @@ public class BusinessException extends RuntimeException {
         return original;
     }
 
-    public Integer getStatus() {
-        return status;
+    public BusinessCode getBusinessCode() {
+        return businessCode;
     }
 
     public Object getData() {

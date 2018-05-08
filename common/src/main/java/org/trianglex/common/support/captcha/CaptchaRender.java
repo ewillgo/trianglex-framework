@@ -1,4 +1,4 @@
-package org.trianglex.common.support;
+package org.trianglex.common.support.captcha;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Random;
 
 public class CaptchaRender {
@@ -17,11 +18,12 @@ public class CaptchaRender {
     private static final Logger logger = LoggerFactory.getLogger(CaptchaRender.class);
     private static final Random random = new Random(System.nanoTime());
 
+    private static final int DEFAULT_INTERVAL = 2;
     private static final int DEFAULT_WIDTH = 108;
     private static final int DEFAULT_HEIGHT = 40;
     private int width;
     private int height;
-    private String captcha;
+    private Captcha captcha;
 
     private static final char[] CHAR_ARRAY = "3456789abcdefghjkmnpqrstuvwxyABCDEFGHJKMNPQRSTUVWXY".toCharArray();
     private static final Font[] RANDOM_FONT = new Font[]{
@@ -38,10 +40,11 @@ public class CaptchaRender {
     public CaptchaRender(int size, int width, int height) {
         this.width = width;
         this.height = height;
-        this.captcha = getRandomString(size);
+        this.captcha = new Captcha(getRandomString(size),
+                System.currentTimeMillis() + Duration.ofMinutes(DEFAULT_INTERVAL).toMillis());
     }
 
-    public String getCaptcha() {
+    public Captcha getCaptcha() {
         return captcha;
     }
 
@@ -101,7 +104,7 @@ public class CaptchaRender {
 
         g.setFont(RANDOM_FONT[random.nextInt(RANDOM_FONT.length)]);
 
-        for (int i = 0; i < captcha.length(); i++) {
+        for (int i = 0; i < captcha.getCaptcha().length(); i++) {
 
             int degree = random.nextInt(28);
             if (i % 2 == 0) {
@@ -112,7 +115,7 @@ public class CaptchaRender {
             g.rotate(Math.toRadians(degree), x, y);
             color = getRandColor(20, 130);
             g.setColor(color);
-            g.drawString(String.valueOf(captcha.charAt(i)), x + 8, y + 10);
+            g.drawString(String.valueOf(captcha.getCaptcha().charAt(i)), x + 8, y + 10);
             g.rotate(-Math.toRadians(degree), x, y);
         }
 
