@@ -19,9 +19,13 @@ public class RedisConfig {
     @Bean
     @SuppressWarnings("unchecked")
     public RedisTemplate<String, ?> redisTemplate() {
+        GenericToStringSerializer serializer = new GenericToStringSerializer(Object.class);
         RedisTemplate<String, ?> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
-        template.setKeySerializer(new GenericToStringSerializer(Object.class));
+        template.setKeySerializer(serializer);
+        template.setHashKeySerializer(serializer);
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
         return template;
     }
 }
