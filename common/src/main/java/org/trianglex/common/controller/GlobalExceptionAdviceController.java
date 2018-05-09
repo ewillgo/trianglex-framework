@@ -6,12 +6,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.trianglex.common.dto.Result;
-import org.trianglex.common.exception.BusinessException;
+import org.trianglex.common.exception.ApiErrorException;
 
 import java.util.List;
 import java.util.Map;
@@ -47,21 +48,31 @@ public class GlobalExceptionAdviceController {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = BusinessException.class)
-    public Result<Object> businessException(BusinessException e) {
+    @ExceptionHandler(value = ApiErrorException.class)
+    public Result<Object> apiErrorException(ApiErrorException e) {
 
         if (e.getOriginal() != null) {
             logger.error(e.getOriginal().getMessage(), e.getOriginal());
         }
 
-        return e.getBusinessCode() == null
+        return e.getApiCode() == null
                 ? Result.of(FAIL, e.getMessage())
-                : Result.of(e.getBusinessCode(), e.getData());
+                : Result.of(e.getApiCode(), e.getData());
     }
 
     @ResponseBody
     @ExceptionHandler(value = BindException.class)
     public Result<Map<String, String>> validationException(BindException e, BindingResult bindingResult) {
+        return processBindingResult(bindingResult);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Result<Map<String, String>> validationException(MethodArgumentNotValidException e) {
+        return processBindingResult(e.getBindingResult());
+    }
+
+    private Result<Map<String, String>> processBindingResult(BindingResult bindingResult) {
         Result<Map<String, String>> result = new Result<>();
 
         List<ObjectError> errorList = bindingResult.getAllErrors();

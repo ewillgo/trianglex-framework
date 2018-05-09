@@ -1,7 +1,7 @@
 package org.trianglex.common.dto;
 
 
-import org.trianglex.common.exception.BusinessCode;
+import org.trianglex.common.exception.ApiCode;
 
 import java.io.Serializable;
 
@@ -16,14 +16,14 @@ public class Result<T> implements Serializable {
 
     }
 
-    public Result(BusinessCode businessCode) {
-        this.status = businessCode.getStatus();
-        this.message = businessCode.getMessage();
+    public Result(ApiCode apiCode) {
+        this.status = apiCode.getStatus();
+        this.message = apiCode.getMessage();
     }
 
-    public Result(BusinessCode businessCode, T data) {
-        this.status = businessCode.getStatus();
-        this.message = businessCode.getMessage();
+    public Result(ApiCode apiCode, T data) {
+        this.status = apiCode.getStatus();
+        this.message = apiCode.getMessage();
         this.data = data;
     }
 
@@ -61,12 +61,12 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    public static <T> Result<T> of(BusinessCode businessCode) {
-        return of(businessCode, null);
+    public static <T> Result<T> of(ApiCode apiCode) {
+        return of(apiCode, null);
     }
 
-    public static <T> Result<T> of(BusinessCode businessCode, T data) {
-        return new Result<>(businessCode, data);
+    public static <T> Result<T> of(ApiCode apiCode, T data) {
+        return new Result<>(apiCode, data);
     }
 
     public static <T> Result<T> of(Integer status, String message) {

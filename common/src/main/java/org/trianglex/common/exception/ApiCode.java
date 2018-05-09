@@ -1,6 +1,6 @@
 package org.trianglex.common.exception;
 
-public interface BusinessCode {
+public interface ApiCode {
     Integer getStatus();
     String getMessage();
 }

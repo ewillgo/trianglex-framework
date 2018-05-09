@@ -10,7 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
-import org.trianglex.common.exception.BusinessException;
+import org.trianglex.common.exception.ApiErrorException;
 
 import java.time.Duration;
 
@@ -51,7 +51,7 @@ public class AuthorizationAspect implements Ordered {
             if (StringUtils.isEmpty(apiRequest.getAppKey())
                     || StringUtils.isEmpty(apiRequest.getSign())
                     || StringUtils.isEmpty(apiRequest.getOriginalString())) {
-                throw new BusinessException(apiAuthorization.message());
+                throw new ApiErrorException(apiAuthorization.message());
             }
 
             String originalString;
@@ -59,7 +59,7 @@ public class AuthorizationAspect implements Ordered {
                 originalString = new String(
                         Base64Utils.decodeFromUrlSafeString(apiRequest.getOriginalString()), CHARSET);
             } catch (Exception e) {
-                throw new BusinessException(apiAuthorization.message(), e);
+                throw new ApiErrorException(apiAuthorization.message(), e);
             }
 
             String appSecret = loadingCache.get(apiRequest.getAppKey());
@@ -67,7 +67,7 @@ public class AuthorizationAspect implements Ordered {
             String serverSign = SignUtils.sign(originalString, appSecret);
 
             if (!serverSign.equals(clientSign)) {
-                throw new BusinessException(apiAuthorization.message());
+                throw new ApiErrorException(apiAuthorization.message());
             }
 
             break;
