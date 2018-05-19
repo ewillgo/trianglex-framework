@@ -8,6 +8,10 @@ public class Captcha implements Serializable {
     private String captcha;
     private long interval;
 
+    public Captcha(String captcha) {
+        this(captcha, -1);
+    }
+
     public Captcha(String captcha, long interval) {
         this.captcha = captcha;
         this.interval = interval;
