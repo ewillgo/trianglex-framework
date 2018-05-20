@@ -10,6 +10,8 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.trianglex.common.exception.ApiErrorException;
 
 import java.time.Duration;
@@ -20,9 +22,15 @@ import static org.trianglex.common.constant.PropertiesConstant.SPRING_MVC_AUTH_A
 @Component
 public class AuthorizationAspect implements Ordered {
 
+    private final String appSecretKey;
     private final LoadingCache<String, String> loadingCache;
 
     public AuthorizationAspect(CacheLoader<String, String> cacheLoader) {
+        this(cacheLoader, null);
+    }
+
+    public AuthorizationAspect(CacheLoader<String, String> cacheLoader, String appSecretKey) {
+        this.appSecretKey = appSecretKey;
         this.loadingCache = Caffeine.newBuilder()
                 .maximumSize(100)
                 .expireAfterWrite(Duration.ofDays(1))
@@ -68,6 +76,11 @@ public class AuthorizationAspect implements Ordered {
 
             if (!serverSign.equals(clientSign)) {
                 throw new ApiErrorException(apiAuthorization.message());
+            }
+
+            if (!StringUtils.isEmpty(appSecretKey) && !StringUtils.isEmpty(appSecret)) {
+                RequestContextHolder.currentRequestAttributes().setAttribute(
+                        appSecretKey, appSecret, RequestAttributes.SCOPE_REQUEST);
             }
 
             break;
