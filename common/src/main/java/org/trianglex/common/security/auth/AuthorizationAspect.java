@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,6 +22,7 @@ import static org.trianglex.common.constant.PropertiesConstant.SPRING_MVC_AUTH_A
 public class AuthorizationAspect implements Ordered {
 
     private final String appSecretKey;
+    private static final int MD5_LENGTH = 32;
     private final LoadingCache<String, String> loadingCache;
 
     public AuthorizationAspect(CacheLoader<String, String> cacheLoader) {
@@ -58,18 +58,11 @@ public class AuthorizationAspect implements Ordered {
 
             if (StringUtils.isEmpty(apiRequest.getAppKey())
                     || StringUtils.isEmpty(apiRequest.getSign())
-                    || StringUtils.isEmpty(apiRequest.getOriginalString())) {
+                    || apiRequest.getSign().length() < MD5_LENGTH) {
                 throw new ApiErrorException(apiAuthorization.message());
             }
 
-            String originalString;
-            try {
-                originalString = new String(
-                        Base64Utils.decodeFromUrlSafeString(apiRequest.getOriginalString()), CHARSET);
-            } catch (Exception e) {
-                throw new ApiErrorException(apiAuthorization.message(), e);
-            }
-
+            String originalString = apiRequest.getSign().substring(0, MD5_LENGTH);
             String appSecret = loadingCache.get(apiRequest.getAppKey());
             String clientSign = apiRequest.getSign();
             String serverSign = SignUtils.sign(originalString, appSecret);

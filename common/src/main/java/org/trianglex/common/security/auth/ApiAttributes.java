@@ -4,7 +4,6 @@ public class ApiAttributes implements ApiRequest {
 
     private String sign;
     private String appKey;
-    private String originalString;
 
     @Override
     public String getSign() {
@@ -22,15 +21,6 @@ public class ApiAttributes implements ApiRequest {
 
     public void setAppKey(String appKey) {
         this.appKey = appKey;
-    }
-
-    @Override
-    public String getOriginalString() {
-        return originalString;
-    }
-
-    public void setOriginalString(String originalString) {
-        this.originalString = originalString;
     }
 
 }
