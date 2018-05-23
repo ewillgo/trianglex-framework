@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.trianglex.common.log.LoggingProperties;
 import org.trianglex.common.web.AbstractHttpProperties;
 import org.trianglex.common.web.HttpClientInterceptor;
+import org.trianglex.common.web.RestTemplateErrorHandler;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +36,7 @@ public abstract class FrameworkUtils {
         OkHttpClient.Builder okHttpClientBuilder = okHttpClientBuilder(httpProperties);
         okHttpClientBuilder.addInterceptor(new HttpClientInterceptor(loggingProperties));
         restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClientBuilder.build()));
+        restTemplate.setErrorHandler(new RestTemplateErrorHandler());
         return enhanceRestTemplate(name, restTemplate);
     }
 
@@ -44,6 +46,7 @@ public abstract class FrameworkUtils {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(messageConverters);
         restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
+        restTemplate.setErrorHandler(new RestTemplateErrorHandler());
         return enhanceRestTemplate(name, restTemplate);
     }
 
@@ -68,10 +71,10 @@ public abstract class FrameworkUtils {
                 .Builder()
                 .followRedirects(properties.isFollowRedirects())
                 .followSslRedirects(properties.isFollowSslRedirects())
-                .readTimeout(properties.getReadTimeout(), TimeUnit.MILLISECONDS)
-                .connectTimeout(properties.getConnectTimeout(), TimeUnit.MILLISECONDS)
-                .writeTimeout(properties.getWriteTimeout(), TimeUnit.MILLISECONDS)
-                .connectionPool(new ConnectionPool(
-                        properties.getMaxIdleConnections(), properties.getKeepAliveDuration(), TimeUnit.SECONDS));
+                .readTimeout(properties.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS)
+                .connectTimeout(properties.getConnectTimeout().toMillis(), TimeUnit.MILLISECONDS)
+                .writeTimeout(properties.getWriteTimeout().toMillis(), TimeUnit.MILLISECONDS)
+                .connectionPool(new ConnectionPool(properties.getMaxIdleConnections(),
+                        properties.getKeepAliveDuration().getSeconds(), TimeUnit.SECONDS));
     }
 }
