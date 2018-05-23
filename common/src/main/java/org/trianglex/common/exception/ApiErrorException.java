@@ -1,6 +1,8 @@
 package org.trianglex.common.exception;
 
-public class ApiErrorException extends RuntimeException {
+import com.netflix.hystrix.exception.HystrixBadRequestException;
+
+public class ApiErrorException extends HystrixBadRequestException {
 
     private Throwable original;
     private ApiCode apiCode;
