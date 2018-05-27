@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
-import static org.trianglex.common.constant.PropertiesConstant.T_REQUEST_URI;
+import static org.trianglex.common.constant.PropertiesConstant.ERROR_REQUEST_URI;
 import static org.trianglex.common.exception.GlobalApiCode.*;
 
 @ControllerAdvice
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ServiceApiException.class)
     public Result<Object> handleServiceApiException(ServiceApiException ex, HttpServletRequest request, HttpServletResponse response) {
 
-        response.setHeader(T_REQUEST_URI, request.getRequestURI());
+        response.setHeader(ERROR_REQUEST_URI, request.getRequestURI());
         response.setHeader("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setStatus(ex.getHttpStatus() != null ? ex.getHttpStatus().value() : ex.getApiCode().getStatus());
 
@@ -110,7 +110,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (request instanceof ServletWebRequest) {
             HttpServletRequest httpServletRequest = ((ServletWebRequest) request).getRequest();
             HttpServletResponse httpServletResponse = ((ServletWebRequest) request).getResponse();
-            httpServletResponse.setHeader(T_REQUEST_URI, httpServletRequest.getRequestURI());
+            httpServletResponse.setHeader(ERROR_REQUEST_URI, httpServletRequest.getRequestURI());
         }
 
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
