@@ -6,7 +6,8 @@ enum GlobalApiCode implements ApiCode {
     OPERATION_FAIL(-1, "Operation fail"),
     HYSTRIX_TIMEOUT(-100, "Remote call timeout"),
     HYSTRIX_ERROR(-101, "Remote call error"),
-    DATABASE_ERROR(-102, "Database occur error");
+    DATABASE_ERROR(-102, "Database occur error"),
+    NO_HANDLER(-103, "No handler found");
 
     private Integer status;
     private String message;

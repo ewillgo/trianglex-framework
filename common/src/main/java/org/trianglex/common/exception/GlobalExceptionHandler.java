@@ -35,17 +35,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleCommonException(Exception ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         LOGGER.error(ex.getMessage(), ex);
-        return super.handleExceptionInternal(ex, Result.of(OPERATION_FAIL), headers, HttpStatus.OK, request);
+        return handleExceptionInternal(ex, Result.of(OPERATION_FAIL), headers, HttpStatus.OK, request);
     }
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Object> handleDataAccessException(DataAccessException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         LOGGER.error(ex.getMessage(), ex);
-        return super.handleExceptionInternal(ex, Result.of(DATABASE_ERROR), headers, HttpStatus.OK, request);
+        return handleExceptionInternal(ex, Result.of(DATABASE_ERROR), headers, HttpStatus.OK, request);
     }
 
     @ResponseBody
@@ -66,13 +64,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ClientApiException.class)
     public ResponseEntity<Object> handleClientApiException(ClientApiException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
         if (ex.getOriginal() != null) {
             LOGGER.error(ex.getOriginal().getMessage(), ex.getOriginal());
         }
 
-        return super.handleExceptionInternal(ex, ex.getApiCode() != null
+        return handleExceptionInternal(ex, ex.getApiCode() != null
                 ? Result.of(ex.getApiCode(), ex.getData())
                 : Result.of(OPERATION_FAIL.getStatus(), ex.getMessage(), ex.getData()), headers, HttpStatus.OK, request);
     }
@@ -80,29 +77,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(HystrixTimeoutException.class)
     public ResponseEntity<Object> handleHystrixTimeoutException(HystrixTimeoutException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         LOGGER.error(ex.getMessage(), ex);
-        return super.handleExceptionInternal(ex, Result.of(HYSTRIX_TIMEOUT), headers, HttpStatus.OK, request);
+        return handleExceptionInternal(ex, Result.of(HYSTRIX_TIMEOUT), headers, HttpStatus.OK, request);
     }
 
     @ExceptionHandler(HystrixRuntimeException.class)
     public ResponseEntity<Object> handleHystrixRuntimeException(HystrixRuntimeException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         LOGGER.error(ex.getMessage(), ex);
-        return super.handleExceptionInternal(ex, Result.of(HYSTRIX_ERROR), headers, HttpStatus.OK, request);
+        return handleExceptionInternal(ex, Result.of(HYSTRIX_ERROR), headers, HttpStatus.OK, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return super.handleExceptionInternal(ex, processBindingResult(ex.getBindingResult()), headers, status, request);
+        return handleExceptionInternal(ex, processBindingResult(ex.getBindingResult()), headers, status, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleBindException(
             BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return super.handleExceptionInternal(ex, processBindingResult(ex.getBindingResult()), headers, status, request);
+        return handleExceptionInternal(ex, processBindingResult(ex.getBindingResult()), headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
     private Result<Map<String, String>> processBindingResult(BindingResult bindingResult) {
