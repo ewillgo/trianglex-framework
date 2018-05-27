@@ -49,8 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     @ExceptionHandler(ServiceApiException.class)
     public Result<Object> handleServiceApiException(ServiceApiException ex, HttpServletResponse response) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
         response.setHeader("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setStatus(ex.getApiCode().getStatus());
 
