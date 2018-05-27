@@ -2,7 +2,7 @@ package org.trianglex.common.webservice;
 
 import feign.Response;
 import feign.codec.ErrorDecoder;
-import org.trianglex.common.exception.ApiErrorException;
+import org.trianglex.common.exception.ClientApiException;
 
 public class FeignErrorDecoder extends ErrorDecoder.Default {
 
@@ -16,7 +16,7 @@ public class FeignErrorDecoder extends ErrorDecoder.Default {
             exception = e;
         }
 
-        return new ApiErrorException("FeignErrorDecoder throw error.", exception);
+        return new ClientApiException("FeignErrorDecoder throw error.", exception);
     }
 
 }

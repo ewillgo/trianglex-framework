@@ -69,6 +69,14 @@ public class Result<T> implements Serializable {
         return new Result<>(apiCode, data);
     }
 
+    public static <T> Result<T> of(Integer status) {
+        return of(status, null, null);
+    }
+
+    public static <T> Result<T> of(String message) {
+        return of(null, message, null);
+    }
+
     public static <T> Result<T> of(Integer status, String message) {
         return of(status, message, null);
     }

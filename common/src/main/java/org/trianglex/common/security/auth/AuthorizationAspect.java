@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.trianglex.common.exception.ApiErrorException;
+import org.trianglex.common.exception.ClientApiException;
 
 import java.time.Duration;
 
@@ -38,8 +38,6 @@ public class AuthorizationAspect implements Ordered {
                 .build(cacheLoader);
     }
 
-    private static final String CHARSET = "UTF-8";
-
     @Before("@annotation(apiAuthorization)")
     public void before(JoinPoint joinPoint, ApiAuthorization apiAuthorization) {
         Object[] args = joinPoint.getArgs();
@@ -59,7 +57,7 @@ public class AuthorizationAspect implements Ordered {
             if (StringUtils.isEmpty(apiRequest.getAppKey())
                     || StringUtils.isEmpty(apiRequest.getSign())
                     || apiRequest.getSign().length() < MD5_LENGTH) {
-                throw new ApiErrorException(apiAuthorization.message());
+                throw new ClientApiException(apiAuthorization.message());
             }
 
             String originalString = apiRequest.getSign().substring(0, MD5_LENGTH);
@@ -68,7 +66,7 @@ public class AuthorizationAspect implements Ordered {
             String serverSign = SignUtils.sign(originalString, appSecret);
 
             if (!serverSign.equals(clientSign)) {
-                throw new ApiErrorException(apiAuthorization.message());
+                throw new ClientApiException(apiAuthorization.message());
             }
 
             if (!StringUtils.isEmpty(appSecretKey) && !StringUtils.isEmpty(appSecret)) {
