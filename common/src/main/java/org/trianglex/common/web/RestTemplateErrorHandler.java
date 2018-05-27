@@ -13,11 +13,10 @@ import org.trianglex.common.exception.ServiceApiException;
 import org.trianglex.common.util.JsonUtils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import static org.trianglex.common.constant.PropertiesConstant.RC_REQUEST_URI;
+import static org.trianglex.common.constant.PropertiesConstant.T_REQUEST_URI;
 import static org.trianglex.common.exception.GlobalApiCode.REST_TEMPLATE_MESSAGE_PARSE_ERROR;
 
 public class RestTemplateErrorHandler extends DefaultResponseErrorHandler {
@@ -25,7 +24,7 @@ public class RestTemplateErrorHandler extends DefaultResponseErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestTemplateErrorHandler.class);
 
     @Override
-    public void handleError(ClientHttpResponse response) throws IOException {
+    public void handleError(ClientHttpResponse response) {
 
         Result result = null;
         String resultString = null;
@@ -41,7 +40,7 @@ public class RestTemplateErrorHandler extends DefaultResponseErrorHandler {
         }
 
         if (result != null) {
-            List<String> headers = response.getHeaders().get(RC_REQUEST_URI);
+            List<String> headers = response.getHeaders().get(T_REQUEST_URI);
             LOGGER.error("The rest template remote call '{}' result: {}",
                     CollectionUtils.isEmpty(headers) ? "" : headers.get(0), resultString);
         } else {
