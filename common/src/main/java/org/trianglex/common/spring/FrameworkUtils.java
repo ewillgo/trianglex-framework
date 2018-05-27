@@ -36,7 +36,6 @@ public abstract class FrameworkUtils {
         OkHttpClient.Builder okHttpClientBuilder = okHttpClientBuilder(httpProperties);
         okHttpClientBuilder.addInterceptor(new HttpClientInterceptor(loggingProperties));
         restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClientBuilder.build()));
-        restTemplate.setErrorHandler(new RestTemplateErrorHandler());
         return enhanceRestTemplate(name, restTemplate);
     }
 

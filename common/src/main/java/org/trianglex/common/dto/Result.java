@@ -5,7 +5,7 @@ import org.trianglex.common.exception.ApiCode;
 
 import java.io.Serializable;
 
-public class Result<T> implements Serializable {
+public class Result<T> implements ApiCode, Serializable {
 
     private static final long serialVersionUID = -5058196658470038394L;
     private Integer status;
@@ -37,6 +37,7 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
+    @Override
     public Integer getStatus() {
         return status;
     }
@@ -45,6 +46,7 @@ public class Result<T> implements Serializable {
         this.status = status;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

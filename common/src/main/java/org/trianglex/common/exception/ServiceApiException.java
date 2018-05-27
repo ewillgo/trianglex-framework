@@ -1,11 +1,13 @@
 package org.trianglex.common.exception;
 
 import com.netflix.hystrix.exception.HystrixBadRequestException;
+import org.springframework.http.HttpStatus;
 
 public class ServiceApiException extends HystrixBadRequestException {
 
     private static final long serialVersionUID = -2874004519697114786L;
 
+    private HttpStatus httpStatus;
     private Throwable original;
     private ApiCode apiCode;
     private Object data;
@@ -44,5 +46,13 @@ public class ServiceApiException extends HystrixBadRequestException {
 
     public Object getData() {
         return data;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
+
+    public void setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
     }
 }

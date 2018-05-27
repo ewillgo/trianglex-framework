@@ -1,13 +1,14 @@
 package org.trianglex.common.exception;
 
-enum GlobalApiCode implements ApiCode {
+public enum GlobalApiCode implements ApiCode {
 
     OPERATION_SUCCESS(0, "Operation success"),
     OPERATION_FAIL(-1, "Operation fail"),
     HYSTRIX_TIMEOUT(-100, "Remote call timeout"),
     HYSTRIX_ERROR(-101, "Remote call error"),
     DATABASE_ERROR(-102, "Database occur error"),
-    NO_HANDLER(-103, "No handler found");
+    FEIGN_MESSAGE_PARSE_ERROR(-103, "Feign message parse error"),
+    REST_TEMPLATE_MESSAGE_PARSE_ERROR(-104, "Rest template message parse error");
 
     private Integer status;
     private String message;

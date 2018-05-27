@@ -17,14 +17,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.trianglex.common.dto.Result;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
+import static org.trianglex.common.constant.PropertiesConstant.RC_REQUEST_URI;
 import static org.trianglex.common.exception.GlobalApiCode.*;
 
 @ControllerAdvice
@@ -48,10 +51,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(ServiceApiException.class)
-    public Result<Object> handleServiceApiException(ServiceApiException ex, HttpServletResponse response) {
+    public Result<Object> handleServiceApiException(ServiceApiException ex, HttpServletRequest request, HttpServletResponse response) {
 
+        response.setHeader(RC_REQUEST_URI, request.getRequestURI());
         response.setHeader("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.setStatus(ex.getApiCode().getStatus());
+        response.setStatus(ex.getHttpStatus() != null ? ex.getHttpStatus().value() : ex.getApiCode().getStatus());
 
         if (ex.getOriginal() != null) {
             LOGGER.error(ex.getOriginal().getMessage(), ex.getOriginal());
@@ -102,6 +106,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(
             Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        if (request instanceof ServletWebRequest) {
+            HttpServletRequest httpServletRequest = ((ServletWebRequest) request).getRequest();
+            HttpServletResponse httpServletResponse = ((ServletWebRequest) request).getResponse();
+            httpServletResponse.setHeader(RC_REQUEST_URI, httpServletRequest.getRequestURI());
+        }
+
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
