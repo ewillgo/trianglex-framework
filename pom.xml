@@ -54,6 +54,7 @@
         <commons.codec.version>1.11</commons.codec.version>
         <feign-form.version>2.0.2</feign-form.version>
         <feign-form-spring.version>2.0.5</feign-form-spring.version>
+        <jasypt.version>2.0.0</jasypt.version>
     </properties>
 
     <dependencyManagement>
@@ -129,6 +130,11 @@
                 <groupId>io.github.openfeign.form</groupId>
                 <artifactId>feign-form-spring</artifactId>
                 <version>${feign-form-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

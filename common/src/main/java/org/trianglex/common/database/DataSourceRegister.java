@@ -1,5 +1,6 @@
 package org.trianglex.common.database;
 
+import com.ulisesbocchio.jasyptspringboot.environment.StandardEncryptableEnvironment;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
@@ -33,7 +34,11 @@ public class DataSourceRegister implements ImportBeanDefinitionRegistrar, Enviro
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
-        this.binder = new Binder(ConfigurationPropertySources.from(((ConfigurableEnvironment) environment).getPropertySources()));
+        this.binder = new Binder(ConfigurationPropertySources.from(
+                (environment instanceof StandardEncryptableEnvironment
+                        ? (StandardEncryptableEnvironment) environment
+                        : (ConfigurableEnvironment) environment).getPropertySources()
+        ));
     }
 
     @Override
