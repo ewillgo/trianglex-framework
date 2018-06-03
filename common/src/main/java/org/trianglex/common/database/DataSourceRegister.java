@@ -18,6 +18,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +55,9 @@ public class DataSourceRegister implements ImportBeanDefinitionRegistrar, Enviro
             String dataSourceName = String.format("%s.%s", DATA_SOURCE_PREFIX, name);
             BindResult<HikariConfig> bindResult = binder.bind(dataSourceName, Bindable.of(HikariConfig.class));
 
-            dataSource = new HikariDataSource(bindResult.get());
+            HikariConfig hikariConfig = bindResult.get();
+            hikariConfig.setJdbcUrl(HtmlUtils.htmlUnescape(hikariConfig.getJdbcUrl()));
+            dataSource = new HikariDataSource(hikariConfig);
             if (defaultDataSource == null) {
                 defaultDataSource = dataSource;
             }
