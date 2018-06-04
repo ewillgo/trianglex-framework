@@ -94,13 +94,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(ex, processBindingResult(ex.getBindingResult()), headers, status, request);
+        HttpStatus[] httpStatus = new HttpStatus[1];
+        httpStatus[0] = status;
+        return handleExceptionInternal(ex, processBindingResult(
+                ex.getBindingResult(), httpStatus), headers, httpStatus[0], request);
     }
 
     @Override
     protected ResponseEntity<Object> handleBindException(
             BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(ex, processBindingResult(ex.getBindingResult()), headers, status, request);
+        HttpStatus[] httpStatus = new HttpStatus[1];
+        httpStatus[0] = status;
+        return handleExceptionInternal(ex, processBindingResult(
+                ex.getBindingResult(), httpStatus), headers, httpStatus[0], request);
     }
 
     @Override
@@ -117,7 +123,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
-    private Result<Map<String, String>> processBindingResult(BindingResult bindingResult) {
+    private Result<Map<String, String>> processBindingResult(BindingResult bindingResult, HttpStatus[] httpStatus) {
         Result<Map<String, String>> result = new Result<>();
 
         List<ObjectError> errorList = bindingResult.getAllErrors();
@@ -126,6 +132,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 String[] messages = objectError.getDefaultMessage().split("\\#");
                 result.setStatus(Integer.valueOf(messages[0]));
                 result.setMessage(messages[1]);
+
+                if (result.getStatus() >= 1000) {
+                    httpStatus[0] = HttpStatus.OK;
+                }
+
             } catch (Exception ex) {
                 LOGGER.error("The '{}' message's format incorrect, usage: code#message.",
                         ((FieldError) objectError).getField());
