@@ -19,6 +19,7 @@
         <dependency>
             <groupId>org.trianglex</groupId>
             <artifactId>trianglex-common</artifactId>
+            <version>${trianglex.common.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
