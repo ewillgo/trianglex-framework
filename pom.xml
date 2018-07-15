@@ -5,7 +5,7 @@
 
     <groupId>org.trianglex</groupId>
     <artifactId>trianglex-framework</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>trianglex-framework</name>
@@ -35,7 +35,7 @@
     </modules>
 
     <properties>
-        <trianglex.common.version>1.0.0</trianglex.common.version>
+        <trianglex.common.version>1.0.0-SNAPSHOT</trianglex.common.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -177,5 +177,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://nexus.tradercat.net/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>http://nexus.tradercat.net/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
 
 </project>
